@@ -1,0 +1,82 @@
+# Mirrowel Proxy Quota Monitor Configuration
+# ============================
+# This file controls the appearance and behavior of the quota monitor overlay.
+# After editing, restart the monitor: killall -9 python3 && quota-monitor &
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SERVER CONNECTION
+# ─────────────────────────────────────────────────────────────────────────────
+[server]
+# The proxy server hostname or IP address
+host = "192.168.0.113"
+
+# The proxy server port
+port = 8000
+
+# API key for authentication (sent as Bearer token)
+api_key = "VerysecretKey"
+
+# How often to refresh data (in milliseconds)
+# 5000 = 5 seconds, 10000 = 10 seconds, etc.
+refresh_interval_ms = 5000
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# APPEARANCE
+# ─────────────────────────────────────────────────────────────────────────────
+[appearance]
+# Background opacity: 0.0 = fully transparent, 1.0 = fully opaque
+# Recommended: 0.3-0.6 for a nice see-through effect
+background_opacity = 0.55
+
+# Text opacity: how visible the text is
+# Recommended: 0.7-0.95
+text_opacity = 0.85
+
+# Widget width in pixels
+width = 210
+
+# Corner radius for the rounded rectangle background
+corner_radius = 10
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# POSITION
+# ─────────────────────────────────────────────────────────────────────────────
+[position]
+# Which corner to anchor the widget to
+# Options: "top-right", "top-left", "bottom-right", "bottom-left"
+anchor = "top-right"
+
+# Margin from the edge of the screen (in pixels)
+margin_top = 10
+margin_right = 10
+margin_bottom = 10
+margin_left = 10
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# BEHAVIOR
+# ─────────────────────────────────────────────────────────────────────────────
+[behavior]
+# Start in click-through mode (mouse passes through the widget)
+# true  = clicks go through to windows below (default)
+# false = widget is interactive on startup
+click_through = true
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# COLORS (optional overrides)
+# ─────────────────────────────────────────────────────────────────────────────
+[colors]
+# Quota status colors (CSS/hex format)
+# These are used for progress bars and percentage text
+ok = "#4caf50"       # Green - quota > 30%
+warning = "#ff9800"  # Orange - quota 10-30%
+critical = "#f44336" # Red - quota <= 10%
+
+# Provider name color
+provider = "#64b5f6" # Light blue
+
+# Background color (RGB only, opacity is set above)
+background = "10, 12, 16"

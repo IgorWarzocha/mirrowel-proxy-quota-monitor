@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Mirrowel Proxy Quota Monitor
+Comment=Monitor Mirrowel proxy API quota usage
+Exec=python3 /home/igorw/.local/share/quota-monitor/main.py
+Icon=utilities-system-monitor
+Terminal=false
+Categories=Utility;System;
+StartupNotify=false
+X-GNOME-Autostart-enabled=true
