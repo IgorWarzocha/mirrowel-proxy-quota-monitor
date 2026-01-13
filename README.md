@@ -1,6 +1,6 @@
 # Mirrowel Proxy Quota Monitor
 
-A transparent, always-on-top, click-through overlay for monitoring Mirrowel's LLM API Key Proxy quota usage on Hyprland/Wayland. Proxy repo: https://github.com/Mirrowel/LLM-API-Key-Proxy
+A transparent, always-on-top, click-through overlay for monitoring Mirrowel's LLM API Key Proxy quota usage on Hyprland/Wayland. Support the author: https://ko-fi.com/mirrowel Proxy repo: https://github.com/Mirrowel/LLM-API-Key-Proxy
 
 <img width="276" height="285" alt="image" src="https://github.com/user-attachments/assets/f5ebe55c-d11f-4410-8595-dc928faf6bba" />
 
