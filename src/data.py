@@ -130,17 +130,6 @@ def fetch_quota_data() -> Optional[QuotaData]:
                     mgroups = cdata.get("models", {})
 
                 for mname, mdata in mgroups.items():
-                    pct = mdata.get("remaining_pct")
-                    if pct is None:
-                        fraction = mdata.get("baseline_remaining_fraction")
-                        if fraction is not None:
-                            pct = int(fraction * 100)
-                        else:
-                            pct = 0.0
-
-                    if pct < worst_pct:
-                        worst_pct = pct
-
                     rem = mdata.get("requests_remaining")
                     if rem is None:
                         rem = mdata.get("remaining", 0)
@@ -148,6 +137,14 @@ def fetch_quota_data() -> Optional[QuotaData]:
                     max_r = mdata.get("requests_max")
                     if max_r is None:
                         max_r = mdata.get("quota_max_requests") or mdata.get("max", 0)
+
+                    if max_r > 0:
+                        pct = (rem / max_r) * 100
+                    else:
+                        pct = 0.0
+
+                    if pct < worst_pct:
+                        worst_pct = pct
 
                     display_name = mname
                     if pname.upper() == "GEMINI_CLI" and mname == "pro":
