@@ -1,12 +1,10 @@
 # Mirrowel Proxy Quota Monitor
 
-A transparent, always-on-top, click-through overlay for monitoring Mirrowel's LLM API Key Proxy quota usage on Hyprland/Wayland.
+A transparent, always-on-top, click-through overlay for monitoring Mirrowel's LLM API Key Proxy quota usage on Hyprland/Wayland. Proxy repo: https://github.com/Mirrowel/LLM-API-Key-Proxy
 
 <img width="276" height="285" alt="image" src="https://github.com/user-attachments/assets/f5ebe55c-d11f-4410-8595-dc928faf6bba" />
 
 ## Features
-
-Built to pair with Mirrowel's LLM API Key Proxy: https://github.com/Mirrowel/LLM-API-Key-Proxy
 
 - **Transparent overlay** - Configurable opacity, sits on top of everything
 - **Credential Switching** - Click tab selectors (e.g., `1s`, `2f`) to switch between multiple accounts
@@ -29,7 +27,7 @@ sudo pacman -S python-gobject gtk4 gtk4-layer-shell
 
 ## Platform Notes
 
-I develop and test this on Omarchy (Hyprland/Wayland), so I can only speculate about other platforms. There are PRD docs with approach notes, dependencies, and code snippets to help AI agents (or contributors) port this to other OSes. This overlay is designed to sit alongside Mirrowel's LLM API Key Proxy (https://github.com/Mirrowel/LLM-API-Key-Proxy):
+I develop and test this on Omarchy (Hyprland/Wayland), so I can only speculate about other platforms. There are PRD docs with approach notes, dependencies, and code snippets to help AI agents (or contributors) port this to other OSes:
 
 - `PRD-macos.md`
 - `PRD-windows.md`
@@ -66,7 +64,7 @@ Edit `~/.config/quota-monitor/config.toml`:
 ```toml
 # Server connection
 [server]
-host = "192.168.0.113"
+host = "127.0.0.1"
 port = 8000
 api_key = "VerysecretKey"
 refresh_interval_ms = 5000
