@@ -68,7 +68,7 @@ def format_countdown(iso_str: Optional[str]) -> str:
             parts.append(f"{days}d")
         if hours > 0:
             parts.append(f"{hours}h")
-        if minutes > 0:
+        if minutes > 0 and days == 0:
             parts.append(f"{minutes}m")
         if not parts:
             parts.append(f"{int(diff % 60)}s")
