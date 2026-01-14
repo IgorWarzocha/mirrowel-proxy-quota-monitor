@@ -2,7 +2,7 @@
 
 A transparent, always-on-top, click-through overlay for monitoring Mirrowel's LLM API Key Proxy quota usage on Hyprland/Wayland. Support the author: https://ko-fi.com/mirrowel Proxy repo: https://github.com/Mirrowel/LLM-API-Key-Proxy
 
-<img width="276" height="285" alt="image" src="https://github.com/user-attachments/assets/f5ebe55c-d11f-4410-8595-dc928faf6bba" />
+<img width="690" height="297" alt="screenshot-2026-01-14_13-27-03" src="https://github.com/user-attachments/assets/23ea8808-ceed-4ad2-bcbd-817db8f98173" />
 
 ## Features
 
