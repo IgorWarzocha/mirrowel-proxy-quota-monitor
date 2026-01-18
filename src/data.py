@@ -132,16 +132,22 @@ def fetch_quota_data() -> Optional[QuotaData]:
                 for mname, mdata in mgroups.items():
                     rem = mdata.get("requests_remaining")
                     if rem is None:
-                        rem = mdata.get("remaining", 0)
+                        rem = mdata.get("remaining")
+                    if rem is None:
+                        rem = 0
 
                     max_r = mdata.get("requests_max")
                     if max_r is None:
-                        max_r = mdata.get("quota_max_requests") or mdata.get("max", 0)
+                        max_r = mdata.get("quota_max_requests")
+                    if max_r is None:
+                        max_r = mdata.get("max", 0)
 
-                    if max_r > 0:
-                        pct = (rem / max_r) * 100
-                    else:
-                        pct = 0.0
+                    pct = mdata.get("remaining_pct")
+                    if pct is None:
+                        if max_r > 0:
+                            pct = (rem / max_r) * 100
+                        else:
+                            pct = 0.0
 
                     if pct < worst_pct:
                         worst_pct = pct

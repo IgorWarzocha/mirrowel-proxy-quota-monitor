@@ -12,12 +12,19 @@ echo ""
 
 # Check dependencies
 missing=""
-python3 -c "import gi; gi.require_version('Gtk', '4.0')" 2>/dev/null || missing="$missing python-gobject gtk4"
-python3 -c "import gi; gi.require_version('Gtk4LayerShell', '1.0')" 2>/dev/null || missing="$missing gtk4-layer-shell"
-# Check dependencies
-missing=""
-python3 -c "import gi; gi.require_version('Gtk', '4.0')" 2>/dev/null || missing="$missing python-gobject gtk4"
-python3 -c "import gi; gi.require_version('Gtk4LayerShell', '1.0')" 2>/dev/null || missing="$missing gtk4-layer-shell"
+# Try system python first since it usually has the GI bindings
+PYTHON_CMD="python3"
+if ! /usr/bin/python3 -c "import gi; gi.require_version('Gtk', '4.0')" 2>/dev/null; then
+    if ! python3 -c "import gi; gi.require_version('Gtk', '4.0')" 2>/dev/null; then
+        missing="$missing python-gobject gtk4"
+    fi
+else
+    PYTHON_CMD="/usr/bin/python3"
+fi
+
+if ! $PYTHON_CMD -c "import gi; gi.require_version('Gtk4LayerShell', '1.0')" 2>/dev/null; then
+    missing="$missing gtk4-layer-shell"
+fi
 
 if [ -n "$missing" ]; then
     echo "Missing dependencies:$missing"
@@ -48,11 +55,12 @@ else
     echo "Config exists: $CONFIG_DIR/config.toml (not overwritten)"
 fi
 
-cat > "$BIN_DIR/quota-monitor" << 'LAUNCHER'
+# Update launcher to use the detected python command
+cat > "$BIN_DIR/quota-monitor" << LAUNCHER
 #!/bin/bash
 export LD_PRELOAD=/usr/lib/libgtk4-layer-shell.so
-cd "${HOME}/.local/share/quota-monitor"
-exec python3 -m src.main "$@"
+cd "${INSTALL_DIR}"
+exec $PYTHON_CMD -m src.main "\$@"
 LAUNCHER
 chmod +x "$BIN_DIR/quota-monitor"
 
