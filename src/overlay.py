@@ -9,8 +9,8 @@ from typing import Optional
 import cairo
 import gi
 
-gi.require_version('Gtk', '4.0')
-gi.require_version('Gtk4LayerShell', '1.0')
+gi.require_version("Gtk", "4.0")
+gi.require_version("Gtk4LayerShell", "1.0")
 from gi.repository import Gtk, GLib, Gtk4LayerShell as LayerShell
 
 from .config import CONFIG
@@ -57,8 +57,12 @@ class QuotaOverlay(Gtk.Window):
         pos = CONFIG["position"]
         anchor = pos["anchor"]
 
-        for edge in [LayerShell.Edge.TOP, LayerShell.Edge.BOTTOM,
-                     LayerShell.Edge.LEFT, LayerShell.Edge.RIGHT]:
+        for edge in [
+            LayerShell.Edge.TOP,
+            LayerShell.Edge.BOTTOM,
+            LayerShell.Edge.LEFT,
+            LayerShell.Edge.RIGHT,
+        ]:
             LayerShell.set_anchor(self, edge, False)
 
         if "top" in anchor:
@@ -99,12 +103,16 @@ class QuotaOverlay(Gtk.Window):
         for widget in self.interactive_widgets:
             success, rect = widget.compute_bounds(self)
             if success:
-                region.union(cairo.Region(cairo.RectangleInt(
-                    int(rect.origin.x),
-                    int(rect.origin.y),
-                    int(rect.size.width),
-                    int(rect.size.height)
-                )))
+                region.union(
+                    cairo.Region(
+                        cairo.RectangleInt(
+                            int(rect.origin.x),
+                            int(rect.origin.y),
+                            int(rect.size.width),
+                            int(rect.size.height),
+                        )
+                    )
+                )
 
         surface.set_input_region(region)
 
@@ -121,7 +129,7 @@ class QuotaOverlay(Gtk.Window):
 
     def on_cred_switch(self, provider_name, cred_id):
         self.selected_creds[provider_name] = cred_id
-        if hasattr(self, '_last_data'):
+        if hasattr(self, "_last_data"):
             self.update_ui(self._last_data)
 
     def refresh_data(self) -> bool:
@@ -129,6 +137,7 @@ class QuotaOverlay(Gtk.Window):
             data_response = data.fetch_quota_data()
             self._last_data = data_response
             GLib.idle_add(self.update_ui, data_response)
+
         threading.Thread(target=fetch, daemon=True).start()
         return True
 
@@ -156,9 +165,12 @@ class QuotaOverlay(Gtk.Window):
             )
 
             header, interactive = ui.make_provider_header(
-                provider.name, provider.credential_count, provider.credentials,
-                sel_id, self.on_cred_switch,
-                flash_statuses
+                provider.name,
+                provider.credential_count,
+                provider.credentials,
+                sel_id,
+                self.on_cred_switch,
+                flash_statuses,
             )
             self.content_box.append(header)
             self.interactive_widgets.extend(interactive)
@@ -170,13 +182,19 @@ class QuotaOverlay(Gtk.Window):
                 display_groups = provider.quota_groups
 
             if not active_creds:
-                display_groups = sorted(display_groups, key=data.sort_quota_groups(provider.name))
+                display_groups = sorted(
+                    display_groups, key=data.sort_quota_groups(provider.name)
+                )
 
             for quota_group in display_groups:
                 countdown = data.format_countdown(quota_group.reset_time_iso)
                 row = ui.make_quota_row(
-                    quota_group.name, quota_group.remaining, quota_group.max_requests,
-                    quota_group.remaining_pct or 0, countdown, colors
+                    quota_group.name,
+                    quota_group.remaining,
+                    quota_group.max_requests,
+                    quota_group.remaining_pct or 0,
+                    countdown,
+                    colors,
                 )
                 self.content_box.append(row)
 

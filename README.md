@@ -127,3 +127,4 @@ LD_PRELOAD=/usr/lib/libgtk4-layer-shell.so python3 src/main.py
 ## License
 
 MIT
+ 
