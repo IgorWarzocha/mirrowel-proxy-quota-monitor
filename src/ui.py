@@ -8,15 +8,15 @@ from .config import CONFIG
 
 def get_css() -> bytes:
     """Generate CSS from config."""
-    
+
     appearance = CONFIG["appearance"]
     colors = CONFIG["colors"]
-    
+
     bg_opacity = appearance["background_opacity"]
     text_opacity = appearance["text_opacity"]
     radius = appearance["corner_radius"]
     bg_rgb = colors["background"]
-    
+
     return f"""
     window {{
         background: transparent;
@@ -138,24 +138,26 @@ def get_css() -> bytes:
     """.encode()
 
 
-
 def load_css():
     """Load CSS into GTK."""
     css_provider = Gtk.CssProvider()
     css_provider.load_from_data(get_css())
     Gtk.StyleContext.add_provider_for_display(
-        Gdk.Display.get_default(),
-        css_provider,
-        Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+        Gdk.Display.get_default(), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
     )
 
 
-def make_provider_header(name: str, cred_count: int, credentials: list = None, 
-                         selected_id: int = 1, on_click=None,
-                         flash_statuses: dict[int, str] | None = None) -> tuple[Gtk.Box, list[Gtk.Widget]]:
+def make_provider_header(
+    name: str,
+    cred_count: int,
+    credentials: list | None = None,
+    selected_id: int = 1,
+    on_click=None,
+    flash_statuses: dict[int, str] | None = None,
+) -> tuple[Gtk.Box, list[Gtk.Widget]]:
     """Create provider name header with credential tabs."""
     main_vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-    
+
     # Tab row (on top)
     interactive = []
     if credentials and len(credentials) > 1:
@@ -169,28 +171,32 @@ def make_provider_header(name: str, cred_count: int, credentials: list = None,
             if flash_statuses and c.id in flash_statuses:
                 status = flash_statuses[c.id]
                 tab.add_css_class(f"cred-tab-flash-{status}")
-            
+
             if c.id == selected_id:
                 tab.add_css_class("cred-tab-active")
-            
+
             if on_click:
                 gesture = Gtk.GestureClick()
-                gesture.connect("released", lambda g, n, x, y, cid=c.id: on_click(name, cid))
+                gesture.connect(
+                    "released", lambda g, n, x, y, cid=c.id: on_click(name, cid)
+                )
                 tab.add_controller(gesture)
                 interactive.append(tab)
-                
+
             tabs.append(tab)
         main_vbox.append(tabs)
 
     # Provider name row
     header_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
     lbl = Gtk.Label()
-    lbl.set_markup(f"<b>{name.upper()}</b> <span size='small' color='#555'>({cred_count})</span>")
+    lbl.set_markup(
+        f"<b>{name.upper()}</b> <span size='small' color='#555'>({cred_count})</span>"
+    )
     lbl.set_halign(Gtk.Align.START)
     lbl.add_css_class("provider-name")
     header_box.append(lbl)
     main_vbox.append(header_box)
-    
+
     return main_vbox, interactive
 
 
@@ -203,15 +209,21 @@ def make_provider_cost(cost: float) -> Gtk.Label:
     return lbl
 
 
-def make_quota_row(name: str, remaining: int, max_req: int, pct: float, 
-                   reset_countdown: str, colors: dict) -> Gtk.Box:
+def make_quota_row(
+    name: str,
+    remaining: int,
+    max_req: int,
+    pct: float,
+    reset_countdown: str,
+    colors: dict,
+) -> Gtk.Box:
     """
     Create a single quota row.
-    
+
     Layout: [name  remaining/max  pct%] [reset_time]
     """
     row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
-    
+
     # Pick color based on percentage
     if pct <= 10:
         color = colors["critical"]
@@ -219,7 +231,7 @@ def make_quota_row(name: str, remaining: int, max_req: int, pct: float,
         color = colors["warning"]
     else:
         color = colors["ok"]
-    
+
     # Quota info
     name_short = name[:10]
     info = Gtk.Label()
@@ -231,7 +243,7 @@ def make_quota_row(name: str, remaining: int, max_req: int, pct: float,
     info.set_halign(Gtk.Align.START)
     info.add_css_class("quota-line")
     row.append(info)
-    
+
     # Reset time (prominent)
     if reset_countdown:
         rt = Gtk.Label()
@@ -239,7 +251,7 @@ def make_quota_row(name: str, remaining: int, max_req: int, pct: float,
         rt.set_halign(Gtk.Align.START)
         rt.add_css_class("reset-time")
         row.append(rt)
-    
+
     return row
 
 
@@ -247,7 +259,7 @@ def make_summary(total_creds: int, total_cost: float, ok_color: str) -> Gtk.Box:
     """Create bottom summary bar."""
     box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
     box.add_css_class("summary-box")
-    
+
     lbl = Gtk.Label()
     lbl.set_markup(
         f"<span color='#666'>{total_creds} creds</span>  "
@@ -255,5 +267,5 @@ def make_summary(total_creds: int, total_cost: float, ok_color: str) -> Gtk.Box:
     )
     lbl.add_css_class("summary-text")
     box.append(lbl)
-    
+
     return box
