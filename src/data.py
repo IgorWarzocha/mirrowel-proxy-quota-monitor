@@ -181,6 +181,8 @@ def fetch_quota_data() -> Optional[QuotaData]:
 
                     remaining = window_data.get("remaining", 0)
                     limit = window_data.get("limit", 0)
+                    if limit is None:
+                        limit = 0
 
                     pct = window_data.get("remaining_pct")
                     if pct is None and limit > 0:

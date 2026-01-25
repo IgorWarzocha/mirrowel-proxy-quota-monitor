@@ -8,7 +8,7 @@ import tomllib
 
 DEFAULT_CONFIG = {
     "server": {
-        "host": "192.168.0.113",
+        "host": "127.0.0.1",
         "port": 8000,
         "api_key": "VerysecretKey",
         "refresh_interval_ms": 5000,
@@ -57,7 +57,7 @@ def load_config() -> dict:
         Path(__file__).parent.parent / "config.toml",
         Path(__file__).parent / "config.toml",
     ]
-    
+
     for config_path in config_paths:
         if config_path.exists():
             try:
@@ -66,7 +66,7 @@ def load_config() -> dict:
                 return deep_merge(DEFAULT_CONFIG, user_config)
             except Exception as e:
                 print(f"Error: {e}")
-    
+
     return DEFAULT_CONFIG
 
 
